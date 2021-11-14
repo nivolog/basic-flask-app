@@ -1,11 +1,17 @@
-# Basic Flask App
+# Easy Plan App
 
-This small repo demonstrates a proper file structure for a Flask app. The folders named *static* and *templates* are required.
+## Description
 
-**Routes** and **static files** are handled correctly in all `src` and `href` attributes in the template files.
+This small app demonstrates ability of A* pathfinding algorithm to construct a valid path on grid.
 
-The template file `base.html` is used as a shell by the other three HTML templates. This means they insert content into `base.html` according to Jinja2 template rules.
+##Usage 
 
-After installing all dependencies, run the app by entering its folder and typing:
+At first run docker-compose to create virtual server
 
-`$ python routes.py`
+`$ docker-compose up`
+
+Next go to address **0.0.0.0:5000** in your default browser
+
+Follow instructions on website
+
+*Note: if there is nothing on mentioned address, check it via `$ docker ps` function*

@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <h1>{{ title }}</h1>
+
+    <img alt="AStar-main" src="{{ url_for('static', filename='images/astar_main.jpg') }}">
+    <br>
+        <p>Here you can try A* planning algorithm!</p>
+
+
+      <a href="{{ url_for('planning') }}">Try it yourself</a>
+
+
+
+{% endblock %}

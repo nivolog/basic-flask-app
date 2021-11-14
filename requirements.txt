@@ -3,8 +3,11 @@ click==6.7
 Flask==0.12
 itsdangerous==0.24
 Jinja2==2.9.5
-MarkupSafe==1.0
+MarkupSafe>=1.0
 packaging==16.8
 pyparsing==2.2.0
 six==1.10.0
 Werkzeug==0.11.15
+numpy
+Pillow
+redis

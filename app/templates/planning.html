@@ -1,0 +1,93 @@
+{% extends 'base.html' %} {% block body %}
+
+<head>
+     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+  <script>
+
+    async function addPoint(canvas, event) {
+        const rect = canvas.getBoundingClientRect()
+        const x = event.clientX - rect.left
+        const y = event.clientY - rect.top
+        return await fetch('/add_point', {method: "POST",headers: {
+          'Content-Type': 'application/json'
+        },
+        redirect: 'follow', // manual, *follow, error
+        referrerPolicy: 'no-referrer', // no-referrer, *client
+        body: JSON.stringify({ "click": {"x": x, "y": y}})}).then(response => response.json())
+    }
+
+
+    function fillColor(imageData,width, height, posx, posy, red, green, blue, alpha) {
+
+      let dy = posy * width * 4;
+      let pos = dy + posx * 4;
+      imageData.data[pos++] = red;
+      imageData.data[pos++] = green;
+      imageData.data[pos++] = blue;
+      imageData.data[pos++] = alpha;
+    }
+
+    function drawMap(canvas, ctx){
+        let img=new Image();
+        img.src="{{ url_for('static', filename='images/map1.png') }}";
+        img.id = "map"
+        img.onload=function(){
+          canvas.width=img.width;
+          canvas.height=img.height;
+          ctx.drawImage(img,0,0);
+        }
+    }
+    function InitCanvas(){
+        let canvas=document.getElementById("canvas");
+        let ctx=canvas.getContext("2d");
+        drawMap(canvas, ctx)
+
+
+
+
+        canvas.addEventListener('click', async function (e) {
+            drawMap(canvas, ctx)
+            let response = await addPoint(canvas, e)
+            console.log(response.path.length)
+            let imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
+            const msg = document.getElementById('result')
+            if(!response.pathFound){
+                msg.textContent = 'You should choose a traversable (white) cell to make path!'
+                msg.style.fontWeight = "bold";
+                alert('Error! Invalid goal point!')
+            }else{
+                msg.textContent = 'Path found! \n Total path length: ' + response.pathLength
+                msg.style.fontWeight = "normal";
+                let path = response.path
+                for(let dx = -2; dx < 3; dx++){
+                    for(let dy = -2; dy < 3; dy++){
+                        fillColor(imageData, canvas.width, canvas.height, response.Goal.x + dx, response.Goal.y + dy, 255, 0, 0, 255)
+                    }
+                }
+
+
+                for(let i = 0; i < path.length; i++){
+                    fillColor(imageData, canvas.width, canvas.height, path[i][0], path[i][1], 255, 0, 0, 255)
+                }
+
+
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                ctx.putImageData(imageData, 0, 0);
+            }
+        });
+    }
+  </script>
+</head>
+<body onload="InitCanvas();">
+    <div>
+        <canvas id="canvas" width="300" height="300"></canvas>
+    </div>
+    <div style="text-align: center;">
+        <p id="result"></p>
+        <p>Click on map to get path made by A* algorithm</p>
+        <a href="{{ url_for('index') }}">Go back</a>
+    </div>
+
+</body>
+{% endblock %}
