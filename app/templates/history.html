@@ -12,22 +12,6 @@
 
     <h1>{{ title }}</h1>
 
-    
-
-    
-{#    {% if userHistory %}#}
-{#        <script>#}
-{#            let userHistory = JSON.parse({{ userHistory | tojson }})#}
-{#            console.log(userHistory);#}
-{#            for (let element in userHistory) {#}
-{#                console.log(userHistory[element]);#}
-{#            }#}
-{##}
-{##}
-{#        </script>#}
-{##}
-{#    {% endif %}#}
-
     <a href="{{ url_for('index') }}">Go back</a>
     <script type="text/javascript">
         let images = JSON.parse({{ userHistory | tojson }});
