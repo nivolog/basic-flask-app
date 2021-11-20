@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block body %}
+    <head>
+        <style>
+            #pics img {
+            height: 120px;
+            width: 120px;
+            }
+        </style>
+    </head>
+
+    <h1>{{ title }}</h1>
+
+    
+
+    
+{#    {% if userHistory %}#}
+{#        <script>#}
+{#            let userHistory = JSON.parse({{ userHistory | tojson }})#}
+{#            console.log(userHistory);#}
+{#            for (let element in userHistory) {#}
+{#                console.log(userHistory[element]);#}
+{#            }#}
+{##}
+{##}
+{#        </script>#}
+{##}
+{#    {% endif %}#}
+
+    <a href="{{ url_for('index') }}">Go back</a>
+    <script type="text/javascript">
+        let images = JSON.parse({{ userHistory | tojson }});
+        console.log(images)
+        let num_columns = 2;
+        for (let index = 0; index < images.length; index++) {
+            if (index % num_columns == 0) {
+                if (index) {
+                    document.write("</tr></table><br>")
+                }
+                document.write("<table cellspacing=50px cellpadding=0px><tr>")
+            }
+            document.write("<td>") //width=120px height=120px style='text-align: center
+            document.write("<img src='data:image/png;charset=utf-8;base64," + images[index] + "' height=250px>")
+            document.write("</td>")
+        }
+    </script>
+
+
+
+
+
+
+
+{% endblock %}
